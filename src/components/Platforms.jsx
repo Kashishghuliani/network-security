@@ -1,8 +1,10 @@
 
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 const platforms = [
   {
+    id: "palo-alto",
     number: "01",
     name: "Palo Alto",
     sub: "PRISMA SASE",
@@ -11,6 +13,7 @@ const platforms = [
     tags: ["Prisma Access", "Prisma SD-WAN", "Panorama", "ADEM"]
   },
   {
+    id: "zscaler",
     number: "02",
     name: "Zscaler",
     sub: "ZERO TRUST EXCHANGE",
@@ -19,6 +22,7 @@ const platforms = [
     tags: ["ZIA", "ZPA", "ZDX", "App Connectors"]
   },
   {
+    id: "cato-networks",
     number: "03",
     name: "Cato Networks",
     sub: "SASE CLOUD",
@@ -29,38 +33,64 @@ const platforms = [
 ];
 
 export default function Platform() {
+  const location = useLocation();
+  const activePlatform = location.hash.replace("#", "");
+
   return (
     <section className="platform-section" id="platforms">
       <div className="platform-heading">
         <div>
-          <div className="eyebrow light-eyebrow"><span></span> TECHNOLOGY ECOSYSTEM</div>
-          <h2>Built around the platforms<br />powering modern security.</h2>
+          <div className="eyebrow light-eyebrow">
+            <span></span> TECHNOLOGY ECOSYSTEM
+          </div>
+          <h2>
+            Built around the platforms<br />
+            powering modern security.
+          </h2>
         </div>
-        <p>Specialized implementation and engineering across leading SASE and zero-trust ecosystems.</p>
+
+        <p>
+          Specialized implementation and engineering across leading SASE and
+          zero-trust ecosystems.
+        </p>
       </div>
 
       <div className="platform-track">
         {platforms.map((platform) => (
-          <article className="platform-card" key={platform.number}>
+          <article
+            className={`platform-card ${
+              activePlatform === platform.id ? "platform-card-active" : ""
+            }`}
+            id={platform.id}
+            key={platform.number}
+          >
             <div className="platform-card-top">
               <span>{platform.number} / PLATFORM</span>
               <span className="platform-arrow">↗</span>
             </div>
+
             <div className="platform-brand">
               <h3>{platform.name}</h3>
               <span>{platform.sub}</span>
             </div>
+
             <h4>{platform.title}</h4>
             <p>{platform.text}</p>
+
             <div className="platform-tags">
-              {platform.tags.map(tag => <span key={tag}>{tag}</span>)}
+              {platform.tags.map(tag => (
+                <span key={tag}>{tag}</span>
+              ))}
             </div>
           </article>
         ))}
       </div>
+
       <div className="platform-footer">
         <span>ENTERPRISE-GRADE IMPLEMENTATION</span>
-        <span>DESIGNED FOR YOUR ENVIRONMENT <b>↗</b></span>
+        <span>
+          DESIGNED FOR YOUR ENVIRONMENT <b>↗</b>
+        </span>
       </div>
     </section>
   );

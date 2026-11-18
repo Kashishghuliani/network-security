@@ -1,8 +1,10 @@
 
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const services = [
   {
+    id: "ai-security",
     number: "02",
     label: "AI SECURITY",
     title: "AI Security & Governance",
@@ -14,6 +16,7 @@ const services = [
     ]
   },
   {
+    id: "soc",
     number: "03",
     label: "SECURITY OPERATIONS",
     title: "Security Operations Center (SOC) Setup & Modernization",
@@ -25,6 +28,7 @@ const services = [
     ]
   },
   {
+    id: "network",
     number: "04",
     label: "NETWORK ENGINEERING",
     title: "Network Configuration & Architecture Engineering",
@@ -36,6 +40,7 @@ const services = [
     ]
   },
   {
+    id: "assessments",
     number: "05",
     label: "SECURITY ASSESSMENTS",
     title: "Comprehensive Network & Cybersecurity Audits",
@@ -48,9 +53,14 @@ const services = [
   }
 ];
 
-function ServiceDetails({ service }) {
+function ServiceDetails({ service, activeService }) {
   return (
-    <article className="service-detail">
+    <article
+      className={`service-detail ${
+        activeService === service.id ? "service-detail-active" : ""
+      }`}
+      id={service.id}
+    >
       <div className="service-detail-head">
         <div>
           <span className="service-label">
@@ -80,9 +90,11 @@ function ServiceDetails({ service }) {
 }
 
 export default function Services() {
+  const location = useLocation();
+  const activeService = location.hash.replace("#", "");
+
   return (
     <section className="services-section section-pad" id="services">
-
       <div className="services-heading">
         <div>
           <div className="eyebrow">
@@ -100,9 +112,12 @@ export default function Services() {
         </p>
       </div>
 
-      {/* SERVICE 01 — SASE */}
-
-      <article className="service-feature">
+      <article
+        className={`service-feature ${
+          activeService === "sase" ? "service-feature-active" : ""
+        }`}
+        id="sase"
+      >
         <div className="feature-topline">
           <span>01 / SASE & ZERO-TRUST</span>
           <span>NETWORK TRANSFORMATION ↗</span>
@@ -119,21 +134,22 @@ export default function Services() {
               tuning, and cutover management.
             </p>
 
-            <a href="#platforms" className="text-link">
+            <Link to="/platforms" className="text-link">
               Explore our platform expertise <span>↗</span>
-            </a>
+            </Link>
           </div>
         </div>
       </article>
 
-      {/* SERVICES 02–05 */}
-
       <div className="service-detail-list">
         {services.map(service => (
-          <ServiceDetails key={service.number} service={service} />
+          <ServiceDetails
+            key={service.number}
+            service={service}
+            activeService={activeService}
+          />
         ))}
       </div>
-
     </section>
   );
 }
